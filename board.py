@@ -17,6 +17,8 @@ class Board:
         self._shuffle(m)
         self.initial_state = np.copy(self.state)
 
+        self.f = 0
+
     '''
     This function returns a list of tuples containing possible next states and the move direction that created that state
     '''
@@ -100,3 +102,7 @@ class Board:
     '''
     def __str__(self):
         return str(self.state)
+    
+    
+    def __lt__(self, other):
+        return self.f < other.f

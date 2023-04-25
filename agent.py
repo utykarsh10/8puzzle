@@ -21,10 +21,6 @@ def MT(board: Board) -> int:
 
     return tiles
 
-    
-
-    return 
-
 def CB(board: Board) -> int:
     #City Block Distance or Manhattan Distance 
     dist = 0
@@ -50,7 +46,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     statelist = []
     movelist = []
 
-    #bfs
+    #bfs when heuristic = 0
     if(heuristic == 0):
         queue = [board]
         while queue:
@@ -71,6 +67,39 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
                     statelist.append(state[0])
                     movelist.append(state[1])
 
-    
 
-    return board
+    #With heuristic 
+    else:
+       
+        moves_and_costs = {board: ([], 0)}
+
+        queue = [(0, board)]
+        hq.heapify(queue)
+
+        while queue:
+            #lowest f value state
+            _, current_board = hq.heappop(queue)
+
+            if current_board.goal_test() == True:
+                #return current_board, moves_and_costs[current_board]
+                return moves_and_costs[current_board][0]
+
+            next_states = current_board.next_action_states()
+
+            for next_board, move in next_states:
+                g = moves_and_costs[current_board][1] + 1  
+                h = heuristic(next_board)
+                f = g + h
+
+                if next_board not in moves_and_costs:
+                    moves_and_costs[next_board] = (moves_and_costs[current_board][0] + [move], g)
+                    hq.heappush(queue, (f, next_board))
+
+                elif g < moves_and_costs[next_board][1]:
+                    moves_and_costs[next_board] = (moves_and_costs[current_board][0] + [move], g)
+
+        return None
+                
+
+        
+
