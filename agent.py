@@ -35,7 +35,18 @@ def CB(board: Board) -> int:
 
 
 def NA(board: Board) -> int:
-    return 
+    #Number of inversions
+    flat_arr = board.state.flatten()
+    flat_len = len(flat_arr)
+
+    inversions = 0
+    for i in range(flat_len):
+        for j in range(i + 1, flat_len):
+            if flat_arr[i] and flat_arr[j] and flat_arr[i] > flat_arr[j]:
+                inversions += 1
+    return inversions
+
+
 
 
 
