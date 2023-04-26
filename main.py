@@ -13,10 +13,8 @@ def main():
             board = Board(m, seed)
             
             start =  time.perf_counter()
-            
-            time_limit = 5
         
-            solution, expanded_nodes = a_star_search(board, heuristic, time_limit)
+            solution, expanded_nodes = a_star_search(board, heuristic)
             correct = board.check_solution(solution)
 
             end =  time.perf_counter()

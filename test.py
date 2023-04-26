@@ -16,8 +16,8 @@ def test(heuristic):
     for i, (m, s) in enumerate(zip([10,20,30,40,50], [21, 77, 39, 8, 402])):
 
         board = Board(m,s)
-
-        solution, nodes_explored = a_star_search(board, heuristic)
+        time_limit = 5
+        solution, nodes_explored = a_star_search(board, heuristic, time_limit)
         correct = board.check_solution(solution)
 
         if correct:

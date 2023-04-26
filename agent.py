@@ -54,23 +54,23 @@ def NA(board: Board) -> int:
 '''
 A* Search 
 '''
-def a_star_search(board: Board, heuristic: Callable[[Board], int], time_limit):
+def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     statelist = []
     movelist = []
-
+    start_time = time.perf_counter()
+    time_limit = 5
+    
     #bfs when heuristic = 0
     if(heuristic == 0):
         queue = [board]
         while queue:
             
-            if not queue:
-                return None, board.nodes_explored
-            
+            if time.perf_counter() - start_time > time_limit:
+                return movelist, board.nodes_explored
             board = queue.pop(0)
 
             if(board.goal_test()):
                 return movelist, board.nodes_explored
-
             
             for state in board.next_action_states():
                 if(state[0] not in statelist):
@@ -86,15 +86,16 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int], time_limit):
        
         moves_and_costs = {board: ([], 0)}
 
-        frontier = [(0, board)]
-        hq.heapify(frontier)
+        queue = [(0, board)]
+        hq.heapify(queue)
 
-        while frontier:
-            #lowest f value state
-            if not frontier:
-                return None, board.nodes_explored
+        while queue:
             
-            _, current_board = hq.heappop(frontier)
+            if time.perf_counter() - start_time > time_limit:
+                return moves_and_costs[current_board][0], board.nodes_explored
+            
+            #lowest f value state
+            _, current_board = hq.heappop(queue)
 
             if current_board.goal_test() == True:
                 #return current_board, moves_and_costs[current_board]
@@ -109,7 +110,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int], time_limit):
 
                 if next_board not in moves_and_costs:
                     moves_and_costs[next_board] = (moves_and_costs[current_board][0] + [move], g)
-                    hq.heappush(frontier, (f, next_board))
+                    hq.heappush(queue, (f, next_board))
                     board.nodes_explored += 1
 
                 elif g < moves_and_costs[next_board][1]:
