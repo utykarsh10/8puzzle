@@ -3,6 +3,7 @@ import numpy as np
 import time
 from agent import MT, CB, NA, a_star_search
 
+# https://www.statology.org/jaccard-similarity-python/
 def calculate_similarity(arr1, arr2):
     set1 = set(arr1)
     set2 = set(arr2)
@@ -27,16 +28,27 @@ def main():
             
             correct = board.check_solution(solution)
             if correct:
-                print("succeeded with 100%")
+                print("For " + str(m) + ", succeeded with 100%")
             else:
-                print("failed")
-                correct_solution, not_needed = a_star_search(board, NA)
-                correctness = calculate_similarity(solution, correct_solution)
-                
-            print("Percentage of correctness: " + str(correctness))
-            print ("Nodes = " + str(expanded_nodes))
+                print("For " + str(m) + ", failed")
+                correct_solution, not_relevant = a_star_search(board, CB)
+                numCorrectMove = 0;
+                for i in range(len(correct_solution)):
+                    if solution[i] == correct_solution[i]:
+                        numCorrectMove += 1;
+                    else:
+                        break
+                percentage = numCorrectMove / len(correct_solution) * 100
+                print ("For " + str(m) + ", " + str(percentage) + "% was correct")
+            print ("For " + str(m) + ": Nodes = " + str(expanded_nodes))
+            
             solution_cpu_time = end-start
-            print(solution_cpu_time)
+            print("For " + str(m) + ": the average CPU time is: " + str(solution_cpu_time))
+            
+            solution_length = len(solution)
+            print("The length of the array is:", solution_length)
+            print(" ")
+            
 
 if __name__ == "__main__":
     main()

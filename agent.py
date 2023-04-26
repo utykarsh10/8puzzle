@@ -56,28 +56,25 @@ A* Search
 '''
 def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     statelist = []
-    movelist = []
     start_time = time.perf_counter()
     time_limit = 10
     
     #bfs when heuristic = 0
-    if(heuristic == 0):
-        queue = [board]
+    if heuristic == 0:
+        queue = [(board, [])]  # Store the initial board state and an empty movelist
         while queue:
-            
             if time.perf_counter() - start_time > time_limit:
-                return movelist, board.nodes_explored
-            board = queue.pop(0)
+                return current_movelist, board.nodes_explored
+            current_board, current_movelist = queue.pop(0)  # Unpack the board state and its corresponding movelist
 
-            if(board.goal_test()):
-                return movelist, board.nodes_explored
-            
-            for state in board.next_action_states():
-                if(state[0] not in statelist):
-                    board = state[0]
-                    queue.append(board)
-                    statelist.append(state[0])
-                    movelist.append(state[1])
+            if current_board.goal_test():
+                return current_movelist, board.nodes_explored
+
+            for next_state, move in current_board.next_action_states():
+                if next_state not in statelist:
+                    new_movelist = current_movelist + [move]  # Add the move to the current_movelist
+                    queue.append((next_state, new_movelist))  # Store the new state and its movelist in the queue
+                    statelist.append(next_state)
                     board.nodes_explored += 1
 
 
