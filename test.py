@@ -17,7 +17,7 @@ def test(heuristic):
 
         board = Board(m,s)
         time_limit = 5
-        solution, nodes_explored = a_star_search(board, heuristic, time_limit)
+        solution, nodes_explored = a_star_search(board, heuristic)
         correct = board.check_solution(solution)
 
         if correct:

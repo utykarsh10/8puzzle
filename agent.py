@@ -58,7 +58,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     statelist = []
     movelist = []
     start_time = time.perf_counter()
-    time_limit = 5
+    time_limit = 10
     
     #bfs when heuristic = 0
     if(heuristic == 0):
