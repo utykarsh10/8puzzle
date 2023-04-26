@@ -4,31 +4,22 @@ import time
 from agent import MT, CB, NA, a_star_search
 
 def main():
+    seed = 10
+    heuristics = [0, MT, CB, NA]
 
-    #for m in [10,20,30,40,50]:
-        #for seed in range(0,10):
-            # Sets the seed of the problem so all students solve the same problems
-            #board = Board(m, seed)
+    for m in [10,15,20,25]:
+        for heuristic in heuristics:
             
-            board = Board(10,21)
-            start =  time.process_time()   
-            print(board)
-           # print(board.initial_state)
-            '''
-            ***********************************************
-            Solve the Board state here with A*
-            ***********************************************
-            '''
+            board = Board(m, seed)
+            
+            start =  time.perf_counter()
+            
+            time_limit = 5
         
-            solution = a_star_search(board, MT)
-
+            solution, expanded_nodes = a_star_search(board, heuristic, time_limit)
             correct = board.check_solution(solution)
-            #print(solution)
 
-            #for state in board.next_action_states():
-               # print(state[0], state[1])
-
-            end =  time.process_time()
+            end =  time.perf_counter()
             solution_cpu_time = end-start
             print(solution_cpu_time)
 

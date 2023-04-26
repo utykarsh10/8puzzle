@@ -4,6 +4,7 @@ from collections.abc import Callable
 
 import numpy as np
 import heapq as hq
+import time
 
 '''
 Heuristics
@@ -53,7 +54,7 @@ def NA(board: Board) -> int:
 '''
 A* Search 
 '''
-def a_star_search(board: Board, heuristic: Callable[[Board], int]):
+def a_star_search(board: Board, heuristic: Callable[[Board], int], time_limit):
     statelist = []
     movelist = []
 
@@ -61,12 +62,15 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     if(heuristic == 0):
         queue = [board]
         while queue:
+            
+            if not queue:
+                return None, board.nodes_explored
+            
             board = queue.pop(0)
 
             if(board.goal_test()):
                 return movelist, board.nodes_explored
 
-            print(board.state)
             
             for state in board.next_action_states():
                 if(state[0] not in statelist):
@@ -82,12 +86,15 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
        
         moves_and_costs = {board: ([], 0)}
 
-        queue = [(0, board)]
-        hq.heapify(queue)
+        frontier = [(0, board)]
+        hq.heapify(frontier)
 
-        while queue:
+        while frontier:
             #lowest f value state
-            _, current_board = hq.heappop(queue)
+            if not frontier:
+                return None, board.nodes_explored
+            
+            _, current_board = hq.heappop(frontier)
 
             if current_board.goal_test() == True:
                 #return current_board, moves_and_costs[current_board]
@@ -102,7 +109,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
                 if next_board not in moves_and_costs:
                     moves_and_costs[next_board] = (moves_and_costs[current_board][0] + [move], g)
-                    hq.heappush(queue, (f, next_board))
+                    hq.heappush(frontier, (f, next_board))
                     board.nodes_explored += 1
 
                 elif g < moves_and_costs[next_board][1]:
