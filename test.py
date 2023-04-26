@@ -29,13 +29,13 @@ def test(heuristic):
             print(f"Incorrect solution for problem {i} where m={m} and s={s}")
 
 
-# print("Tests for MT Heuristic")
-# try:
-#     test(MT)
-# except Exception as e:
-#     print("The following Error has occured")
-#     print(e)
-# print()
+print("Tests for MT Heuristic")
+try:
+    test(MT)
+except Exception as e:
+    print("The following Error has occured")
+    print(e)
+print()
 
 print("Test for CB Heuristic")
 try:
