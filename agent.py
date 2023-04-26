@@ -27,8 +27,8 @@ def CB(board: Board) -> int:
 
     for i in range(3):
         for j in range(3):
-            if board.state[i,j] != 0:
-                x, y = np.argwhere(board.solution == board.state[i,j])[0]
+            if board.state[i][j] != 0:
+                x, y = np.argwhere(board.solution == board.state[i][j])[0]
                 dist += abs(i-x) + abs(j-y)
 
     return dist
@@ -64,10 +64,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
             board = queue.pop(0)
 
             if(board.goal_test()):
-                print(board)
-                print("YAY")
-                #print(movelist)
-                break
+                return movelist, board.nodes_explored
 
             print(board.state)
             
@@ -77,6 +74,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
                     queue.append(board)
                     statelist.append(state[0])
                     movelist.append(state[1])
+                    board.nodes_explored += 1
 
 
     #With heuristic 
@@ -93,7 +91,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
             if current_board.goal_test() == True:
                 #return current_board, moves_and_costs[current_board]
-                return moves_and_costs[current_board][0]
+                return moves_and_costs[current_board][0], board.nodes_explored
 
             next_states = current_board.next_action_states()
 
@@ -105,6 +103,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
                 if next_board not in moves_and_costs:
                     moves_and_costs[next_board] = (moves_and_costs[current_board][0] + [move], g)
                     hq.heappush(queue, (f, next_board))
+                    board.nodes_explored += 1
 
                 elif g < moves_and_costs[next_board][1]:
                     moves_and_costs[next_board] = (moves_and_costs[current_board][0] + [move], g)

@@ -18,6 +18,7 @@ class Board:
         self.initial_state = np.copy(self.state)
 
         self.f = 0
+        self.nodes_explored = 0
 
     '''
     This function returns a list of tuples containing possible next states and the move direction that created that state
