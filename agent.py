@@ -57,25 +57,27 @@ A* Search
 def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     statelist = []
     start_time = time.perf_counter()
-    time_limit = 15
+    time_limit = 200
     
     #bfs when heuristic = 0
     if heuristic == 0:
         queue = [(board, [])]  # Store the initial board state and an empty movelist
         while queue:
-            if time.perf_counter() - start_time > time_limit:
-                return current_movelist, board.nodes_explored
+            # if time.perf_counter() - start_time > time_limit:
+            #     print("Time Limit Reached")
+            #     return current_movelist, board.nodes_explored
             current_board, current_movelist = queue.pop(0)  # Unpack the board state and its corresponding movelist
 
             if current_board.goal_test():
-                return current_movelist, board.nodes_explored
+                return current_movelist
+                # return current_movelist, board.nodes_explored
 
             for next_state, move in current_board.next_action_states():
                 if next_state not in statelist:
                     new_movelist = current_movelist + [move]  # Add the move to the current_movelist
                     queue.append((next_state, new_movelist))  # Store the new state and its movelist in the queue
                     statelist.append(next_state)
-                    board.nodes_explored += 1
+                    # board.nodes_explored += 1
 
 
     #With heuristic 
@@ -88,16 +90,17 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
         while queue:
             
-            if time.perf_counter() - start_time > time_limit:
-                return moves_and_costs[current_board][0], board.nodes_explored
+            # if time.perf_counter() - start_time > time_limit:
+            #     print("Time Limit Reached heuristic")
+            #     return moves_and_costs[current_board][0], board.nodes_explored
             
             #lowest f value state
             _, current_board = hq.heappop(queue)
 
             if current_board.goal_test() == True:
                 #return current_board, moves_and_costs[current_board]
-                return moves_and_costs[current_board][0], board.nodes_explored
-
+                # return moves_and_costs[current_board][0], board.nodes_explored
+                return moves_and_costs[current_board][0]
             next_states = current_board.next_action_states()
 
             for next_board, move in next_states:

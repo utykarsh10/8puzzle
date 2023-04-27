@@ -21,7 +21,8 @@ def main():
                 board = Board(m, seed)
                 
                 start =  time.perf_counter()
-                solution, expanded_nodes = a_star_search(board, heuristic)
+                # solution, expanded_nodes = a_star_search(board, heuristic)
+                solution = a_star_search(board, heuristic)
                 end =  time.perf_counter()
                 
                 correct = board.check_solution(solution)

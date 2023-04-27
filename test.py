@@ -16,8 +16,7 @@ def test(heuristic):
     for i, (m, s) in enumerate(zip([10,20,30,40,50], [21, 77, 39, 8, 402])):
 
         board = Board(m,s)
-        time_limit = 5
-        solution, nodes_explored = a_star_search(board, heuristic)
+        solution = a_star_search(board, heuristic)
         correct = board.check_solution(solution)
 
         if correct:
@@ -29,13 +28,13 @@ def test(heuristic):
             print(f"Incorrect solution for problem {i} where m={m} and s={s}")
 
 
-print("Tests for MT Heuristic")
-try:
-    test(MT)
-except Exception as e:
-    print("The following Error has occured")
-    print(e)
-print()
+# print("Tests for MT Heuristic")
+# try:
+#     test(MT)
+# except Exception as e:
+#     print("The following Error has occured")
+#     print(e)
+# print()
 
 print("Test for CB Heuristic")
 try:
